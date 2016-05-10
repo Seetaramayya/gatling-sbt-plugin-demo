@@ -18,9 +18,9 @@ libraryDependencies += "io.gatling" % "gatling-test-framework" % "2.2.0" % "test
  - Along with `scalaSource`, `resources`, I have to added compiled classes path to `classpath`
 
 ```
-.settings(resourceDirectory in Gatling := new File(gatlingResourceDir))
-.settings(scalaSource in Gatling := new File(gatlingScalaSource))
-.settings(fullClasspath in Gatling += new File(s"$gatlingTarget"))
+  settings(resourceDirectory in Gatling := new File(sourceDirectory.value, "perf/resources"))
+  settings(scalaSource in Gatling := new File(sourceDirectory.value, "perf/scala"))
+  settings(fullClasspath in Gatling += new File(crossTarget.value, "gatling-classes"))
 ```
  - NOTE: Don't override settings with `GatlingPlugin.gatlingSettings` at the bottom of the `build.sbt` (I did this mistake all my changes are not taken)
 
