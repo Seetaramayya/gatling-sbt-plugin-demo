@@ -14,19 +14,11 @@ libraryDependencies += "io.gatling" % "gatling-test-framework" % "2.2.0" % "test
 
 def isPerfTest(name: String): Boolean = name endsWith "Simulation"
 
-val baseDir: String = s"${System.getProperty("user.dir")}"
-val gatlingSourceDir: String = s"$baseDir/src/perf"
-val gatlingResourceDir: String = s"$gatlingSourceDir/resources"
-val gatlingScalaSource: String = s"$gatlingSourceDir/scala"
-val gatlingJavaSource: String = s"$gatlingSourceDir/java"
-val gatlingTarget: String = s"$baseDir/target/scala-2.11/gatling-classes"
-
-
 lazy val root = (project in file("."))
   .settings(gatlingSettings: _*)
   .configs(Gatling)
-  .settings(resourceDirectory in Gatling := new File(gatlingResourceDir))
-  .settings(scalaSource in Gatling := new File(gatlingScalaSource))
-  .settings(fullClasspath in Gatling += new File(s"$gatlingTarget"))
+  .settings(resourceDirectory in Gatling := new File(sourceDirectory.value, "perf/resources"))
+  .settings(scalaSource in Gatling := new File(sourceDirectory.value, "perf/scala"))
+  .settings(fullClasspath in Gatling += new File(crossTarget.value, "gatling-classes"))
   .settings(testOptions in Gatling := Seq(Tests.Filter(isPerfTest(_))))
 
